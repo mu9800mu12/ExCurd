@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
 
-
     @GetMapping("/main")
     public String main() throws Exception {
+
         log.info(this.getClass().getName() + ".main 페이지 보여주는 함수 실행");
-        return "/user/main";
+
+        return "/main";
 
 
 
