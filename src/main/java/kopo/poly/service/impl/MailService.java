@@ -19,7 +19,7 @@ public class MailService implements IMailService {
     private String fromMail;
 
     @Override
-    public int doSendMail(MailDTO pDTO) {
+    public int doSendMail(int pDTO) {
 
         //로그 찍기 (추후 로그 확인으로 이 함수에 접근했는지 확인하기 좋다)
         log.info(this.getClass().getName() + ".doSendMail Start!");
@@ -35,7 +35,7 @@ public class MailService implements IMailService {
     String toMail = CmmUtil.nvl(pDTO.getToMail()); // 받는 사람
     String title = CmmUtil.nvl(pDTO.getTitle()); // 메일 제목
     String contents = CmmUtil.nvl(pDTO.getContnets()); // 메일 제목
-        log.info("toMail :" +toMail );
+        log.info("toMail :" + toMail );
         log.info("title :" + title);
         log.info("contents :" + contents);
 
@@ -47,7 +47,7 @@ public class MailService implements IMailService {
 
         try {
 
-            messageHelper.setTO(toMail); // 받는 사람
+            messageHelper.setTo(toMail); // 받는 사람
             messageHelper.setFrom(fromMail); // 보내는 사람
             messageHelper.setSubject(title); // 메일 제목
             messageHelper.setText(contents); // 메일 내용

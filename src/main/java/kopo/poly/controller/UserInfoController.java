@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +36,53 @@ public class UserInfoController {
 
         return "/user/userRegForm";
     }
+    @ResponseBody
+    @PostMapping(value = "getUserIdExists")
+    public UserInfoDTO getUserExists(HttpServletRequest request) throws Exception {
+
+        log.info(this.getClass().getName() + "getUserIdExists Start!");
+
+        String user_id = CmmUtil.nvl(request.getParameter("user_id")); //회원아이디
+
+        log.info("user_id :" + user_id);
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+        pDTO.setUser_id(user_id);
+
+        //회원아이디를 통해 중복된 아이디인지 조회
+        UserInfoDTO rDTO = Optional.ofNullable(userInfoService.getUserIdExists(pDTO)).orElseGet(UserInfoDTO::new);
+
+        log.info(this.getClass().getName() + ".getUserIdExosts End!");
+
+        return rDTO;
+    }
+
+    /**
+     * 회원 가입 전 이메일 중복체크하기(Ajax를 통해 입력한 아이디 정보 받음)
+     *  유효한 이메일인지 확인하기 위해 입력된 이메일에 인증번호를 포함하여 메일 발송
+     */
+
+    @ResponseBody
+    @PostMapping(value = "getEmailExists")
+    public UserInfoDTO getEmailExists(HttpServletRequest request) throws Exception{
+
+        log.info(this.getClass().getName() + "getEmailExists Start!");
+
+        String email = CmmUtil.nvl(request.getParameter("email")); // 회원아이디
+
+         log.info("email :" + email);
+
+         UserInfoDTO pDTO = new UserInfoDTO();
+         pDTO.setEmail(EncryptUtil.encAES128CBC(email));
+
+         // 입력된 이메일이 중복된 이메일인지 조회
+        UserInfoDTO rDTO = Optional.ofNullable(userInfoService.getEmailExists(pDTO)).orElseGet(UserInfoDTO::new);
+
+        log.info(this.getClass().getName() + ".getEmailExists End!");
+
+        return rDTO;
+    }
+
 
     @PostMapping(value = "/user/insertUserInfo")
     public String insertUserInfo(HttpServletRequest request, ModelMap model) throws Exception {
