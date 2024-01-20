@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 @Service("CovidService")
 public class CovidService implements ICovidService {
-
+//
     private final RestTemplate restTemplate;
 
     @Value("${api.service.key")
