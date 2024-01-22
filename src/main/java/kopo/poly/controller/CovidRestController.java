@@ -21,6 +21,8 @@ public class CovidRestController {
         String result = covidService.getCovidRes();
 
         return result;
+//
+
 
     }
 }
